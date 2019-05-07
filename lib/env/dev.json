@@ -1,0 +1,6 @@
+{
+  "env": "DEV",
+  "production": false,
+  "apiKey": "<DEV_KEY>",
+  "apiUrl": "jsonplaceholder.typicode.com"
+}

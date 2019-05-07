@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_redux/containers/counter/counter.dart';
 import 'package:flutter_todo_redux/containers/counter/increase_counter.dart';
+import 'package:flutter_todo_redux/containers/home/todo_list.dart';
 
 class HomePage extends StatelessWidget {
+  static const String routeName = '/home_page';
+
   final String title;
 
   HomePage({this.title});
@@ -14,16 +17,23 @@ class HomePage extends StatelessWidget {
         title: Text(title),
       ),
       body: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'You have pushed the button this many times:',
+        child: Column(
+          children: <Widget>[
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'You have pushed the button this many times:',
+                  ),
+                  Counter(),
+                ],
               ),
-              Counter(),
-            ],
-          ),
+            ),
+            Expanded(
+              child: TodoList(),
+            ),
+          ],
         ),
       ),
       floatingActionButton: IncreaseCountButton(),
