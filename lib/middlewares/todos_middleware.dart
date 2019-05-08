@@ -1,5 +1,4 @@
 import 'package:flutter_todo_redux/actions/index.dart';
-import 'package:flutter_todo_redux/pages/home_page.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_todo_redux/models/index.dart';
 import 'package:flutter_todo_redux/repository/todos_repository.dart';
@@ -41,14 +40,9 @@ Middleware<AppState> _createLoadTodos(TodosRepository repository) {
     await repository.loadTodos().then(
       (todos) {
 //        dynamic todoss = todos.map((json) => Todo.fromJson(json)).toList();
-        store.dispatch(
+        return store.dispatch(
           TodosLoadedAction(
             todos,
-          ),
-        );
-        store.dispatch(
-          NavigateAction(
-            routeName: HomePage.routeName,
           ),
         );
       },

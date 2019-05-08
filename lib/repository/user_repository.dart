@@ -4,8 +4,8 @@ import 'package:flutter_todo_redux/services/storage.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/widgets.dart';
 
-class TodosRepository {
-  TodosRepository() {
+class UsersRepository {
+  UsersRepository() {
     this.request = API().request;
   }
 
@@ -41,26 +41,5 @@ class TodosRepository {
     final Map<String, dynamic> userAuth = await storage.read('userAuth');
 
     return userAuth != null ? userAuth.containsValue(true) : false;
-  }
-
-  Future authenticateUser(
-      {@required String username, @required String password}) async {
-    final response = await request(
-        method: 'GET',
-        path: '/users',
-        query: {'username': username, 'id': password});
-    final User userDetails = User.fromJson(response[0]);
-
-    await storage.write(key: 'userDetails', value: userDetails);
-    await storage
-        .write(key: 'userAuth', value: {'auth': true, 'token': userDetails.id});
-
-    return userDetails;
-  }
-
-  Future<bool> logoutUser() async {
-    await storage.deleteAll();
-
-    return true;
   }
 }

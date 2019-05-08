@@ -15,9 +15,14 @@ class TodoList extends StatelessWidget {
           children: vm.todos.map(
             (Todo todo) {
               return ListTile(
-                leading: Icon(
-                  Icons.toys,
-                  color: todo.completed ? Colors.lightGreen : null,
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.toys,
+                    color: todo.completed ? Colors.lightGreen : null,
+                  ),
+                  onPressed: () {
+                    vm.onCheckboxChanged(todo, !todo.completed);
+                  },
                 ),
                 title: Text(todo.title),
                 trailing: Switch(

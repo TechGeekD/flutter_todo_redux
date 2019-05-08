@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_redux/pages/splash_screen_page.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_todo_redux/actions/index.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/user.dart';
+import 'package:redux/redux.dart';
 
 class ButtonBarWidget extends StatefulWidget {
   ButtonBarWidget(this.userCreds, this.setUserCreds);
@@ -12,8 +16,6 @@ class ButtonBarWidget extends StatefulWidget {
 }
 
 class _ButtonBarWidgetState extends State<ButtonBarWidget> {
-  Future _getUserList;
-
   @override
   void initState() {
     super.initState();
@@ -21,74 +23,81 @@ class _ButtonBarWidgetState extends State<ButtonBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ButtonTheme.bar(
-      child: ButtonBar(
-        alignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          UserList(context, widget.setUserCreds),
-          FlatButton(
-            child: const Text('Register'),
-            onPressed: () {
-              _navigateToSplashScreen(context);
-            },
+    return StoreConnector(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) => ButtonTheme.bar(
+            child: ButtonBar(
+              alignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                UserList(context, widget.setUserCreds),
+                FlatButton(
+                  child: const Text('Register'),
+                  onPressed: () {
+                    print('Register');
+                  },
+                ),
+                FlatButton(
+                  child: const Text('Login'),
+                  onPressed: () {
+                    vm.onLoginPressed(
+                      username: widget.userCreds['username'],
+                      password: widget.userCreds['password'],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
-          FlatButton(
-            child: const Text('Login'),
-            onPressed: () {
-              _authenticateUser();
-            },
-          ),
-        ],
-      ),
     );
   }
 
   // ignore: non_constant_identifier_names
-  Widget UserList(context, setUserCreds) => FutureBuilder(
-        future: _getUserList,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.active:
-            case ConnectionState.waiting:
-              return Container(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+  Widget UserList(context, setUserCreds) {
+    return StoreConnector(
+      converter: _ViewModel.fromStore,
+      builder: (BuildContext context, _ViewModel vm) {
+        return DropdownButton<String>(
+          hint: Text('Choose a user'),
+          items: vm.userList.map(
+            (value) {
+              return DropdownMenuItem<String>(
+                value: value.id.toString(),
+                child: Text(value.username),
               );
-            case ConnectionState.done:
-              final List userList = snapshot.data;
-
-              return DropdownButton<String>(
-                hint: Text('Choose a user'),
-                items: userList.map(
-                  (value) {
-                    return DropdownMenuItem<String>(
-                      value: value.id.toString(),
-                      child: Text(value.username),
-                    );
-                  },
-                ).toList(),
-                onChanged: (newValue) {
-                  final user = userList.firstWhere((item) {
-                    return item.id.toString() == newValue;
-                  });
-                  setUserCreds('username', user.username);
-                  setUserCreds('password', user.id);
-                },
-              );
-          }
-        },
-      );
-
-  void _navigateToSplashScreen(BuildContext context) {
-    Navigator.pushNamed(context, SplashScreenPage.routeName);
+            },
+          ).toList(),
+          onChanged: (newValue) {
+            final user = vm.userList.firstWhere((item) {
+              return item.id.toString() == newValue;
+            });
+            setUserCreds('username', user.username);
+            setUserCreds('password', user.id);
+          },
+        );
+      },
+    );
   }
+}
 
-  void _authenticateUser() {
-//    _loginScreenBloc.dispatch(AuthenticateUser(
-//      username: widget.userCreds['username'],
-//      password: widget.userCreds['password'],
-//    ));
+class _ViewModel {
+  final List<User> userList;
+  final bool loading;
+  final Function onLoginPressed;
+
+  _ViewModel({this.loading, this.userList, this.onLoginPressed});
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      userList: store.state.userList,
+      loading: store.state.isLoading,
+      onLoginPressed: ({username, password}) {
+        store.dispatch(
+          AuthenticateAction(
+            username: username,
+            password: password,
+          ),
+        );
+      },
+    );
   }
 }

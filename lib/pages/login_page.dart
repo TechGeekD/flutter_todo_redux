@@ -4,11 +4,12 @@ import 'package:flutter_todo_redux/containers/login/button_bar.dart';
 import 'package:flutter_todo_redux/containers/login/input_fields.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({this.title});
+  LoginPage({this.title, this.onInit});
 
   static final String routeName = '/login';
 
   final String title;
+  final Function onInit;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    widget.onInit();
     setState(() {
       userCreds.putIfAbsent('username', () => "");
       userCreds.putIfAbsent('password', () => "");

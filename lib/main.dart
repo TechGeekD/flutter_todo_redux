@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_redux/middlewares/index.dart';
+
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 
 import 'package:flutter_todo_redux/actions/index.dart';
 import 'package:flutter_todo_redux/reducers/app_reducer.dart';
+import 'package:flutter_todo_redux/middlewares/index.dart';
 
 import 'package:flutter_todo_redux/models/app_state.dart';
 
@@ -19,11 +20,12 @@ void main() {
   final store = Store<AppState>(
     appReducer,
     initialState: AppState(),
-    middleware: createStoreTodosMiddleware()
-      ..addAll([
-        createRouteMiddleware(navigatorKey: navigatorKey),
-        LoggingMiddleware.printer()
-      ]),
+    middleware: [
+      ...createStoreTodosMiddleware(),
+      ...createAuthMiddleware(),
+      createRouteMiddleware(navigatorKey: navigatorKey),
+      LoggingMiddleware.printer(),
+    ],
   );
 
   runApp(TodoApp(store: store));
@@ -46,17 +48,27 @@ class TodoApp extends StatelessWidget {
           SplashScreenPage.routeName: (BuildContext context) {
             return SplashScreenPage(
               onInit: () {
-                StoreProvider.of<AppState>(context).dispatch(LoadTodosAction());
+                StoreProvider.of<AppState>(context)
+                    .dispatch(HasAuthenticatedAction());
               },
             );
           },
           HomePage.routeName: (BuildContext context) {
             return HomePage(
-              title: 'home',
+              title: 'Home',
+              onInit: () {
+                StoreProvider.of<AppState>(context).dispatch(LoadTodosAction());
+              },
             );
           },
           LoginPage.routeName: (BuildContext context) {
-            return LoginPage();
+            return LoginPage(
+              title: 'Login',
+              onInit: () {
+                StoreProvider.of<AppState>(context)
+                    .dispatch(LoadAuthenticationUserListAction());
+              },
+            );
           }
         },
       ),
