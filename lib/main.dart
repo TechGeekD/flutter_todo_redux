@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_logging/redux_logging.dart';
+
+
+import 'package:flutter_todo_redux/config.dart';
+import 'package:flutter_todo_redux/env/env.dart';
 
 import 'package:flutter_todo_redux/actions/index.dart';
 import 'package:flutter_todo_redux/reducers/app_reducer.dart';
@@ -28,7 +31,10 @@ void main() {
     ],
   );
 
-  runApp(TodoApp(store: store));
+  runApp(ConfigWrapper(
+    config: Config.fromJson(env),
+    child: TodoApp(store: store),
+  ));
 }
 
 class TodoApp extends StatelessWidget {
@@ -39,11 +45,14 @@ class TodoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Config config = ConfigWrapper.of(context);
+
     return StoreProvider(
       store: store,
       child: MaterialApp(
         title: title,
         navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: !config.production,
         routes: <String, WidgetBuilder>{
           SplashScreenPage.routeName: (BuildContext context) {
             return SplashScreenPage(

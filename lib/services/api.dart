@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_todo_redux/config.dart';
-import 'package:flutter_todo_redux/env/dev.dart' as dev;
-// import 'package:flutter_todo_redux/env/prod.dart' as prod;
+import 'package:flutter_todo_redux/env/env.dart';
 
 class API {
 
-  final Config config = Config.fromJson(dev.config);
+  final Config config = Config.fromJson(env);
 
   request({
     String method,
