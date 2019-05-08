@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:flutter_todo_redux/actions/index.dart';
+import 'package:flutter_todo_redux/redux/actions/index.dart';
 import 'package:flutter_todo_redux/models/todo.dart';
 
 final todoReducer = combineReducers<List<Todo>>([

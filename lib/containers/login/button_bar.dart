@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_todo_redux/actions/index.dart';
+
+import 'package:flutter_todo_redux/redux/actions/index.dart';
 import 'package:flutter_todo_redux/models/app_state.dart';
 import 'package:flutter_todo_redux/models/user.dart';
-import 'package:redux/redux.dart';
 
 class ButtonBarWidget extends StatefulWidget {
   ButtonBarWidget(this.userCreds, this.setUserCreds);

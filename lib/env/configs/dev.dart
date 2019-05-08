@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'prod.g.dart';
+part 'package:flutter_todo_redux/env/configs/dev.g.dart';
 
-@JsonLiteral('prod.json', asConst: true)
+@JsonLiteral('dev.json', asConst: true)
 Map<String, dynamic> get config => _$configJsonLiteral;

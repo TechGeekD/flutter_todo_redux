@@ -7,9 +7,9 @@ import 'package:redux_logging/redux_logging.dart';
 import 'package:flutter_todo_redux/config.dart';
 import 'package:flutter_todo_redux/env/env.dart';
 
-import 'package:flutter_todo_redux/actions/index.dart';
-import 'package:flutter_todo_redux/reducers/app_reducer.dart';
-import 'package:flutter_todo_redux/middlewares/index.dart';
+import 'package:flutter_todo_redux/redux/actions/index.dart';
+import 'package:flutter_todo_redux/redux/reducers/app_reducer.dart';
+import 'package:flutter_todo_redux/redux/middlewares/index.dart';
 
 import 'package:flutter_todo_redux/models/app_state.dart';
 

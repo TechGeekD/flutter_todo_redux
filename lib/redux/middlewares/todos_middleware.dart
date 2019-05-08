@@ -1,6 +1,8 @@
-import 'package:flutter_todo_redux/actions/index.dart';
 import 'package:redux/redux.dart';
+
+import 'package:flutter_todo_redux/redux/actions/index.dart';
 import 'package:flutter_todo_redux/models/index.dart';
+
 import 'package:flutter_todo_redux/repository/todos_repository.dart';
 
 // import 'package:path_provider/path_provider.dart';

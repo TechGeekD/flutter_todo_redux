@@ -1,6 +1,5 @@
 import 'package:flutter_todo_redux/models/todo.dart';
 
-
 class ClearCompletedAction {}
 
 class ToggleAllAction {}

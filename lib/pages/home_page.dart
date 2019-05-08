@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_todo_redux/actions/auth_actions.dart';
+
+import 'package:flutter_todo_redux/redux/actions/auth_actions.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+
 import 'package:flutter_todo_redux/containers/counter/counter.dart';
 import 'package:flutter_todo_redux/containers/counter/increase_counter.dart';
 import 'package:flutter_todo_redux/containers/home/todo_list.dart';
-import 'package:flutter_todo_redux/models/app_state.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/home_page';

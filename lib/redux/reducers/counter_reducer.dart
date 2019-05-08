@@ -1,4 +1,4 @@
-import 'package:flutter_todo_redux/actions/counter_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/counter_actions.dart';
 
 int counterReducer(int currentCount, action) {
   if (action is IncrementCountAction) {

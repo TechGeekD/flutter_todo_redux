@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_todo_redux/actions/todos_actions.dart';
+
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
 import 'package:flutter_todo_redux/models/app_state.dart';
 import 'package:flutter_todo_redux/models/todo.dart';
-import 'package:redux/redux.dart';
 
 class TodoList extends StatelessWidget {
   @override

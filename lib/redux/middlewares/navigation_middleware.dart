@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter_todo_redux/actions/index.dart';
+import 'package:flutter_todo_redux/redux/actions/index.dart';
 import 'package:flutter_todo_redux/models/app_state.dart';
 
 //void navigationMiddleware(

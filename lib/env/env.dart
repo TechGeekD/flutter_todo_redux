@@ -1,5 +1,5 @@
-import 'dev.dart' as dev;
-import 'prod.dart' as prod;
+import 'package:flutter_todo_redux/env/configs/dev.dart' as dev;
+import 'package:flutter_todo_redux/env/configs/prod.dart' as prod;
 
 bool prodEnv = false;
 
