@@ -1,17 +1,28 @@
 import 'package:flutter_todo_redux/models/index.dart';
+import 'package:flutter_todo_redux/services/storage.dart';
 
 class AppState {
-  final int count;
-  final bool isLoading;
-  final List<Todo> todos;
-  final List<User> userList;
+  int count;
+  bool isLoading;
+  List<Todo> todos;
+  List<User> userList;
 
   AppState({
     this.count = 0,
     this.isLoading = false,
-    this.todos = const [],
-    this.userList = const [],
-  });
+    this.todos = const <Todo>[],
+    this.userList = const <User>[],
+  }) {
+    this.reHydrate();
+  }
+
+  reHydrate() async {
+    List users = await Storage().read('userList') ?? [];
+    List todoList = await Storage().read('todoList') ?? [];
+
+    userList = users.length > 0 ? UserList.fromJson(users).users : <User>[];
+    todos = todoList.length > 0 ? TodoList.fromJson(todoList).todos : <Todo>[];
+  }
 
   AppState copyWith({
     int count,

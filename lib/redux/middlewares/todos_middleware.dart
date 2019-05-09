@@ -39,9 +39,10 @@ List<Middleware<AppState>> createStoreTodosMiddleware([
 
 Middleware<AppState> _createLoadTodos(TodosRepository repository) {
   return (Store<AppState> store, action, NextDispatcher next) async {
+    store.dispatch(LoaderAction(isLoading: true));
+
     await repository.loadTodos().then(
       (todos) {
-//        dynamic todoss = todos.map((json) => Todo.fromJson(json)).toList();
         return store.dispatch(
           TodosLoadedAction(
             todos,
@@ -53,6 +54,7 @@ Middleware<AppState> _createLoadTodos(TodosRepository repository) {
       return store.dispatch(TodosNotLoadedAction());
     });
 
+    store.dispatch(LoaderAction(isLoading: false));
     next(action);
   };
 }
