@@ -44,11 +44,9 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           if (isLoading)
-            IconButton(
-              icon: Icon(
-                Icons.network_check,
-                color: Colors.white,
-              ),
+            Icon(
+              Icons.network_check,
+              color: Colors.white,
             ),
           IconButton(
             icon: Icon(Icons.exit_to_app),

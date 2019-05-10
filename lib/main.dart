@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_logging/redux_logging.dart';
-
 
 import 'package:flutter_todo_redux/config.dart';
 import 'package:flutter_todo_redux/env/env.dart';
@@ -17,17 +17,30 @@ import 'package:flutter_todo_redux/pages/splash_screen_page.dart';
 import 'package:flutter_todo_redux/pages/login_page.dart';
 import 'package:flutter_todo_redux/pages/home_page.dart';
 
+import 'package:flutter_todo_redux/utils/storage_engine.dart';
+
 final navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
+  final persistor = Persistor<AppState>(
+    storage: FlutterSecureStorageEngine(key: 'secureStore'),
+    serializer:
+        JsonSerializer<AppState>(AppState.fromJson),
+//    debug: true
+  );
+
+  // Load initial state
+  final initialState = await persistor.load();
+
   final store = Store<AppState>(
     appReducer,
-    initialState: AppState(),
+    initialState: initialState ?? AppState(),
     middleware: [
       ...createStoreTodosMiddleware(),
       ...createAuthMiddleware(),
       createRouteMiddleware(navigatorKey: navigatorKey),
       LoggingMiddleware.printer(),
+      persistor.createMiddleware(),
     ],
   );
 

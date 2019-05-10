@@ -1,4 +1,3 @@
-import 'package:flutter_todo_redux/repository/todos_repository.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_todo_redux/redux/actions/index.dart';
 import 'package:flutter_todo_redux/models/todo.dart';
@@ -20,7 +19,6 @@ List<Todo> _updateTodo(List<Todo> todos, UpdateTodoAction action) {
       )
       .toList();
 
-  TodosRepository().persistTodos(todoList: todoList);
   return todoList;
 }
 

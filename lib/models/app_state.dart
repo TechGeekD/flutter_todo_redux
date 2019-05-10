@@ -1,8 +1,14 @@
-import 'package:flutter_todo_redux/models/index.dart';
-import 'package:flutter_todo_redux/services/storage.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'package:flutter_todo_redux/models/index.dart';
+
+part 'app_state.g.dart';
+
+@JsonSerializable()
 class AppState {
+  @JsonKey(ignore: true)
   int count;
+  @JsonKey(ignore: true)
   bool isLoading;
   List<Todo> todos;
   List<User> userList;
@@ -12,17 +18,7 @@ class AppState {
     this.isLoading = false,
     this.todos = const <Todo>[],
     this.userList = const <User>[],
-  }) {
-    this.reHydrate();
-  }
-
-  reHydrate() async {
-    List users = await Storage().read('userList') ?? [];
-    List todoList = await Storage().read('todoList') ?? [];
-
-    userList = users.length > 0 ? UserList.fromJson(users).users : <User>[];
-    todos = todoList.length > 0 ? TodoList.fromJson(todoList).todos : <Todo>[];
-  }
+  });
 
   AppState copyWith({
     int count,
@@ -37,6 +33,11 @@ class AppState {
       userList: userList ?? this.userList,
     );
   }
+
+  static AppState fromJson(dynamic json) =>
+      json != null ? _$AppStateFromJson(json) : null;
+
+  dynamic toJson() => _$AppStateToJson(this);
 
   @override
   String toString() {

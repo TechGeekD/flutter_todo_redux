@@ -19,8 +19,4 @@ class TodosRepository {
     return todoList;
   }
 
-  Future persistTodos({@required List<Todo> todoList}) async {
-    await storage.write(key: 'todoList', value: todoList);
-    return todoList;
-  }
 }
