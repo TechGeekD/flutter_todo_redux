@@ -35,6 +35,8 @@ Middleware<AppState> _createHasAuthedMiddleware({
   @required AuthRepository repository,
 }) {
   return (Store store, action, NextDispatcher next) async {
+    store.dispatch(LoaderAction(isLoading: true));
+
     final bool hasAuthed = await repository.hasAuthenticated();
 
     if (hasAuthed) {
@@ -43,6 +45,7 @@ Middleware<AppState> _createHasAuthedMiddleware({
 
     store.dispatch(NavigateAction(routeName: LoginPage.routeName));
 
+    store.dispatch(LoaderAction(isLoading: false));
     next(action);
   };
 }
@@ -51,6 +54,8 @@ Middleware<AppState> _createAuthMiddleware({
   @required AuthRepository repository,
 }) {
   return (Store store, action, NextDispatcher next) async {
+    store.dispatch(LoaderAction(isLoading: true));
+
     await repository
         .authenticateUser(
           username: action.username,
@@ -62,6 +67,7 @@ Middleware<AppState> _createAuthMiddleware({
       return store.dispatch(AuthenticateFailedAction());
     });
 
+    store.dispatch(LoaderAction(isLoading: false));
     next(action);
   };
 }
@@ -70,10 +76,14 @@ Middleware<AppState> _createUnAuthMiddleware({
   @required AuthRepository repository,
 }) {
   return (Store store, action, NextDispatcher next) async {
+    store.dispatch(LoaderAction(isLoading: true));
+
     final bool auth = await repository.unAuthenticateUser();
     if (!auth) {
       return store.dispatch(NavigateAction(routeName: LoginPage.routeName));
     }
+
+    store.dispatch(LoaderAction(isLoading: false));
     next(action);
   };
 }
@@ -100,11 +110,15 @@ Middleware<AppState> _createLoadAuthUserListMiddleware({
   @required UsersRepository repository,
 }) {
   return (Store store, action, NextDispatcher next) async {
+    store.dispatch(LoaderAction(isLoading: true));
+
     await repository.getUsersList().then((userList) {
       return store.dispatch(AuthenticationUserListAction(userList: userList));
     }).catchError((error) {
       print('Error: $error');
     });
+
+    store.dispatch(LoaderAction(isLoading: false));
 
     next(action);
   };

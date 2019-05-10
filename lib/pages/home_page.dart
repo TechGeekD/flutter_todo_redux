@@ -29,16 +29,31 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final store = StoreProvider.of<AppState>(context);
+    bool isLoading = false;
+
+    store.onChange.listen((_store) async {
+      await Future.delayed(Duration(seconds: 3));
+      setState(() {
+        isLoading = _store.isLoading;
+      });
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
+          if (isLoading)
+            Icon(
+              Icons.network_check,
+              color: Colors.white,
+            ),
           IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () {
-              StoreProvider.of<AppState>(context).dispatch(UnAuthenticateAction());
+              store.dispatch(UnAuthenticateAction());
             },
-          )
+          ),
         ],
       ),
       body: Container(
