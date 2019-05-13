@@ -1,48 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux_persist/redux_persist.dart';
-import 'package:redux_logging/redux_logging.dart';
 
 import 'package:flutter_todo_redux/config.dart';
 import 'package:flutter_todo_redux/env/env.dart';
 
-import 'package:flutter_todo_redux/redux/actions/index.dart';
-import 'package:flutter_todo_redux/redux/reducers/app_reducer.dart';
-import 'package:flutter_todo_redux/redux/middlewares/index.dart';
+import 'package:flutter_todo_redux/redux/store.dart';
+import 'package:flutter_todo_redux/redux/actions.dart';
+import 'package:flutter_todo_redux/redux/app/app_state.dart';
 
-import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/ui/index.dart';
 
-import 'package:flutter_todo_redux/pages/splash_screen_page.dart';
-import 'package:flutter_todo_redux/pages/login_page.dart';
-import 'package:flutter_todo_redux/pages/home_page.dart';
-
-import 'package:flutter_todo_redux/utils/storage_engine.dart';
-
-final navigatorKey = GlobalKey<NavigatorState>();
+import 'package:flutter_todo_redux/utils/keys.dart';
 
 void main() async {
-  final persistor = Persistor<AppState>(
-    storage: FlutterSecureStorageEngine(key: 'secureStore'),
-    serializer:
-        JsonSerializer<AppState>(AppState.fromJson),
-//    debug: true
-  );
-
-  // Load initial state
-  final initialState = await persistor.load();
-
-  final store = Store<AppState>(
-    appReducer,
-    initialState: initialState ?? AppState(),
-    middleware: [
-      ...createStoreTodosMiddleware(),
-      ...createAuthMiddleware(),
-      createRouteMiddleware(navigatorKey: navigatorKey),
-      LoggingMiddleware.printer(),
-      persistor.createMiddleware(),
-    ],
-  );
+  final store = await createStore();
 
   runApp(ConfigWrapper(
     config: Config.fromJson(env),
@@ -64,7 +36,7 @@ class TodoApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         title: title,
-        navigatorKey: navigatorKey,
+        navigatorKey: Keys.navigatorKey,
         debugShowCheckedModeBanner: !config.production,
         routes: <String, WidgetBuilder>{
           SplashScreenPage.routeName: (BuildContext context) {
