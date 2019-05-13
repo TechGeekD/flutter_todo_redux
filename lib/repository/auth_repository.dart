@@ -1,7 +1,9 @@
+import 'package:meta/meta.dart';
+
 import 'package:flutter_todo_redux/models/user.dart';
+
 import 'package:flutter_todo_redux/services/api.dart';
 import 'package:flutter_todo_redux/services/storage.dart';
-import 'package:meta/meta.dart';
 
 class AuthRepository {
   AuthRepository() {
