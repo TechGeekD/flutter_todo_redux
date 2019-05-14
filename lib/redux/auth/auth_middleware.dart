@@ -8,7 +8,6 @@ import 'package:flutter_todo_redux/repository/auth_repository.dart';
 import 'package:flutter_todo_redux/repository/user_repository.dart';
 
 import 'package:flutter_todo_redux/ui/index.dart';
-import 'package:flutter_todo_redux/ui/home/home.dart';
 
 List<Middleware<AppState>> createAuthMiddleware() {
   final AuthRepository repository = AuthRepository();
