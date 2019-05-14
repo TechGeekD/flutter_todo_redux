@@ -1,3 +1,4 @@
+import 'package:flutter_todo_redux/models/loading_status.dart';
 import 'package:flutter_todo_redux/models/todo.dart';
 
 class IncrementCountAction {}
@@ -54,5 +55,16 @@ class AddTodoAction {
   @override
   String toString() {
     return 'AddTodoAction{todo: $todo}';
+  }
+}
+
+class HomeLoadingStatusAction {
+  HomeLoadingStatusAction({this.loadingStatus});
+
+  final LoadingStatus loadingStatus;
+
+  @override
+  String toString() {
+    return "HomeLoadingStatusAction {loadingStatus: $loadingStatus}";
   }
 }
