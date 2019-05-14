@@ -16,7 +16,7 @@ Future<Store<AppState>> createStore() async {
       serializer: JsonSerializer<AppState>(AppState.fromJson),
       transforms: Transforms(
         onLoad: [
-          (state) => state.copyWith(
+          (state) => state?.copyWith(
                 homeState: state.homeState.copyWith(
                   count: 0,
                   loadingStatus: LoadingStatus.success,
@@ -36,7 +36,7 @@ Future<Store<AppState>> createStore() async {
   return Store<AppState>(
     appReducer,
     initialState:
-        initialState.authState != null && initialState.homeState != null
+        initialState?.authState != null && initialState?.homeState != null
             ? initialState
             : AppState.initial(),
     middleware: [
