@@ -1,8 +1,14 @@
 import 'package:redux/redux.dart';
 
 import 'package:flutter_todo_redux/redux/actions.dart'
-    show LoaderAction, LoadTodosAction, TodosLoadedAction, TodosNotLoadedAction;
+    show
+        LoadTodosAction,
+        TodosLoadedAction,
+        TodosNotLoadedAction,
+        HomeLoadingStatusAction;
 import 'package:flutter_todo_redux/redux/app/app_state.dart';
+
+import 'package:flutter_todo_redux/models/loading_status.dart';
 
 import 'package:flutter_todo_redux/repository/todos_repository.dart';
 
@@ -40,22 +46,26 @@ List<Middleware<AppState>> createStoreTodosMiddleware([
 
 Middleware<AppState> _createLoadTodos(TodosRepository repository) {
   return (Store<AppState> store, action, NextDispatcher next) async {
-    store.dispatch(LoaderAction(isLoading: true));
+    store.dispatch(
+        HomeLoadingStatusAction(loadingStatus: LoadingStatus.loading));
 
     await repository.loadTodos().then(
       (todos) {
-        return store.dispatch(
+        store.dispatch(
           TodosLoadedAction(
             todos,
           ),
         );
+        store.dispatch(
+            HomeLoadingStatusAction(loadingStatus: LoadingStatus.success));
       },
     ).catchError((error) {
       print('Error: $error');
+      store.dispatch(
+          HomeLoadingStatusAction(loadingStatus: LoadingStatus.error));
       return store.dispatch(TodosNotLoadedAction());
     });
 
-    store.dispatch(LoaderAction(isLoading: false));
     next(action);
   };
 }

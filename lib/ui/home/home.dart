@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Store<AppState> store = StoreProvider.of<AppState>(context);
     listenStore = store.onChange.listen((_store) async {
-      await Future.delayed(Duration(seconds: 3));
       if (_store.homeState.loadingStatus != loadingStatus) {
         setState(() {
           loadingStatus = _store.homeState.loadingStatus;
@@ -57,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          if (loadingStatus == LoadingStatus.loading)
+          if (store.state.homeState.loadingStatus == LoadingStatus.loading)
             Icon(
               Icons.network_check,
               color: Colors.white,

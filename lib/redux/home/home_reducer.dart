@@ -5,7 +5,8 @@ import 'package:flutter_todo_redux/redux/actions.dart'
         UpdateTodoAction,
         DeleteTodoAction,
         IncrementCountAction,
-        DecrememtCountAction;
+        DecrememtCountAction,
+        HomeLoadingStatusAction;
 import 'package:flutter_todo_redux/redux/home/home_state.dart';
 
 import 'package:flutter_todo_redux/models/todo.dart';
@@ -16,6 +17,7 @@ final homeReducer = combineReducers<HomeState>([
   TypedReducer<HomeState, DeleteTodoAction>(_deleteTodo),
   TypedReducer<HomeState, IncrementCountAction>(_incrementCount),
   TypedReducer<HomeState, DecrememtCountAction>(_decrememtCount),
+  TypedReducer<HomeState, HomeLoadingStatusAction>(_setHomeLoadingStatus),
 ]);
 
 HomeState _setLoadedTodos(HomeState state, TodosLoadedAction action) {
@@ -44,4 +46,11 @@ HomeState _incrementCount(HomeState state, IncrementCountAction action) {
 
 HomeState _decrememtCount(HomeState state, DecrememtCountAction action) {
   return state.copyWith(count: state.count - 1);
+}
+
+HomeState _setHomeLoadingStatus(
+  HomeState state,
+  HomeLoadingStatusAction action,
+) {
+  return state.copyWith(loadingStatus: action.loadingStatus);
 }
